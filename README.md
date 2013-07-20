@@ -1,2 +1,1 @@
-#Android Webview cross domain test
-
+An Android application for testing ajax requests inside a webview (from `file://` to `http://`).
