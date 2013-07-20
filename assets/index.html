@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="test">
+    <h1>TEST cross-domain request</h1>
+    <hr>
+    <ul class="list">
+        <li class="button"><a href="#" data-test-url="http://www.google.com">...</a></li>
+        <li class="button"><a href="#" data-test-url="http://www.twitter.com">...</a></li>
+        <li class="button"><a href="#" data-test-url="http://www.facebook.com">...</a></li>
+    </ul>
+    <p class="info" id="info">...</p>
+
+</div>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+    var DATA_TEST_URL_ATTRIBUTE = "data-test-url";
+
+    var infoElement = document.getElementById("info");
+
+
+    function runTest(url) {
+        var request = new XMLHttpRequest();
+        request.open("GET", url, false);
+        request.send(null);
+
+        if (request.status === 200) {
+            var data = request.responseText;
+            if (data.length > 1000) {
+                data = data.substr(0, 1000) + "...";
+            }
+            info.innerText = data;
+        } else {
+            info.innerText = "ERROR";
+        }
+
+    }
+
+
+    function setup() {
+        function listener(e) {
+            var buttonElement = e.currentTarget;
+            var url = buttonElement.getAttribute(DATA_TEST_URL_ATTRIBUTE);
+            runTest(url);
+        }
+
+        var buttonElements = document.getElementsByClassName("button");
+
+        for (var i = 0, limit = buttonElements.length; i < limit; i++) {
+            var buttonElement = buttonElements.item(i).getElementsByTagName("a")[0];
+            var url = buttonElement.getAttribute(DATA_TEST_URL_ATTRIBUTE);
+            buttonElement.innerText = "test : " + url;
+            buttonElement.addEventListener("click", listener);
+        }
+    }
+
+    setup();
+
+</script>
+
+</body>
+</html>
